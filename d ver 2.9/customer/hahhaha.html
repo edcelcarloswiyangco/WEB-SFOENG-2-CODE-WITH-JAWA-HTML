@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebbyFrames Dashboard (Dark Mode)</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      display: flex;
+    }
+
+    header {
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .icons span {
+      margin-left: 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #333;
+      background-color: #1e1e1e;
+    }
+
+    .navbar a {
+      color: #ccc;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar a.active {
+      color: #4da6ff;
+      border-bottom: 2px solid #4da6ff;
+    }
+
+    .search-container {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .search-container input {
+      width: 80%;
+      max-width: 450px;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+
+    .tasks-section {
+      padding: 1rem;
+      flex: 1;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .card-category {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .card-description {
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .image-placeholder {
+      background-color: #333;
+      width: 100%;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      border-radius: 5px;
+    }
+
+    .card-footer {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* Sidebar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background-color: #1e1e1e;
+      width: 120px; /* Sidebar width reduced to half */
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 0;
+      border-right: 1px solid #333;
+      z-index: 100;
+    }
+
+    nav div {
+      text-align: center;
+      color: #aaa;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      cursor: pointer;
+      background-color: #333; /* Background for the icons */
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    nav div:hover {
+      color: #fff;
+      background-color: #4da6ff; /* Hover effect */
+    }
+
+    nav small {
+      display: block;
+      color: #aaa;
+      font-size: 0.7rem;
+    }
+
+    /* Adjust content margin */
+    .content {
+      margin-left: 120px; /* Adjust content margin based on new sidebar width */
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav>
+    <div>
+      <div>🏠</div>
+      <small>Home</small>
+    </div>
+    <div>
+      <div>👥</div>
+      <small>Network</small>
+    </div>
+    <div>
+      <div>➕</div>
+      <small>Create</small>
+    </div>
+    <div>
+      <div>🔍</div>
+      <small>Search</small>
+    </div>
+    <div>
+      <div>☰</div>
+      <small>Menu</small>
+    </div>
+  </nav>
+
+  <div class="content">
+    <!-- Header -->
+    <header>
+      <div class="logo">📦 WebbyFrames</div>
+      <div class="icons">
+        <span title="Notifications">🔔</span>
+        <span title="Settings">⚙️</span>
+        <span title="Profile">👤</span>
+      </div>
+    </header>
+
+    <div class="navbar">
+      <a class="active" href="#">Overview</a>
+      <a href="#">Tasks</a>
+      <a href="#">Documents</a>
+      <a href="#">Team</a>
+    </div>
+
+    <div class="search-container">
+      <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="tasks-section">
+      <div class="section-title">In Progress</div>
+      <div class="card-grid">
+        <!-- 12 Cards -->
+        <!-- Top 6 -->
+        <div class="card">
+          <div class="card-category">UI Design</div>
+          <div class="card-description">Redesign Login Screen</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 4 • 🗓️ • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Development</div>
+          <div class="card-description">API Integration</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 2 • 🛠️ • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Testing</div>
+          <div class="card-description">Fix Login Bug</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 3 • 🧪 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">UX Review</div>
+          <div class="card-description">User Journey Map</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 1 • 🗂️ • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Analytics</div>
+          <div class="card-description">Add Chart Filters</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 2 • 📊 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Marketing</div>
+          <div class="card-description">Landing Page A/B</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 3 • 📢 • 💬</div>
+        </div>
+
+        <!-- Bottom 6 -->
+        <div class="card">
+          <div class="card-category">SEO</div>
+          <div class="card-description">Keyword Update</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 1 • 🔍 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">DevOps</div>
+          <div class="card-description">Setup CI/CD</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 2 • 🧰 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Support</div>
+          <div class="card-description">Reply to Tickets</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 4 • 📬 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Design</div>
+          <div class="card-description">Icon Set v2</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer">👥 1 • 🎨 • 💬</div>
+        </div>
+        <div class="card">
+          <div class="card-category">Copywriting</div>
+          <div class="card-description">Update FAQs</div>
+          <div class="image-placeholder">Image</div>
+          <div class="card-footer

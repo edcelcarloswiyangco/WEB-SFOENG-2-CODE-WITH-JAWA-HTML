@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Welcome to the BARBER!</h1>
+  <button onclick="logout()">Log out</button>
+
+  <script>
+    if (localStorage.getItem('loggedIn') !== 'true') {
+      alert('You must log in first.');
+      window.location.href = 'login.html';
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedIn');
+      window.location.href = '../login.html';
+    }
+  </script>
+</body>
+</html>

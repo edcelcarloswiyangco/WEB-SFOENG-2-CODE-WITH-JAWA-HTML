@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .admin-page {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #495057;
+      color: #fff;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      border-right: 1px solid #dee2e6;
+    }
+
+    .sidebar h4 {
+      margin-bottom: 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .sidebar button {
+      color: #fff;
+      border-color: #ced4da;
+    }
+
+    .sidebar button:hover {
+      background-color: #6c757d;
+      border-color: #adb5bd;
+    }
+
+    .content {
+      margin-left: 220px;
+      padding: 30px 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .admin-page {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .content {
+        margin-left: 0;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <div class="sidebar">
+    <h4>ADMIN</h4>
+    <button id="customerSectionBtn" class="btn btn-outline-light w-100 mb-2" onclick="showSection('customerSection')">Customers</button>
+    <button id="barberSectionBtn" class="btn btn-outline-light w-100 mb-2" onclick="showSection('barberSection')">Barbers</button>
+    <button id="serviceSectionBtn" class="btn btn-outline-light w-100 mb-2" onclick="showSection('serviceSection')">Services</button>
+    <button id="appointmentSectionBtn" class="btn btn-outline-primary w-100 mb-2" onclick="showSection('appointmentSection')">Appointments</button>
+    <button class="btn btn-danger w-100" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="content">
+    <!-- Customer Management Section -->
+    <section id="customerSection" class="section active">
+      <h2>Customer Management</h2>
+      <form id="customerForm" class="mb-4">
+        <div class="mb-3"><input type="text" id="customerName" class="form-control" placeholder="Name" required /></div>
+        <div class="mb-3"><input type="email" id="customerEmail" class="form-control" placeholder="Email" required /></div>
+        <div class="mb-3"><input type="text" id="customerPhone" class="form-control" placeholder="Phone" required /></div>
+        <div class="mb-3"><input type="text" id="customerAddress" class="form-control" placeholder="Address" required /></div>
+        <div class="mb-3"><input type="password" id="customerPassword" class="form-control" placeholder="Password" required /></div>
+        <button type="submit" class="btn btn-primary">Add Customer</button>
+      </form>
+      <ul id="customerList" class="list-group"></ul>
+    </section>
+
+    <!-- Barber Management Section -->
+    <section id="barberSection" class="section">
+      <h2>Barber Management</h2>
+      <form id="barberForm" class="mb-4">
+        <div class="mb-3"><input type="text" id="barberName" class="form-control" placeholder="Name" required /></div>
+        <div class="mb-3"><input type="email" id="barberEmail" class="form-control" placeholder="Email" required /></div>
+        <div class="mb-3"><input type="text" id="barberNumber" class="form-control" placeholder="Phone" required /></div>
+        <div class="mb-3"><input type="text" id="barberAddress" class="form-control" placeholder="Address" required /></div>
+        <div class="mb-3"><input type="password" id="barberPassword" class="form-control" placeholder="Password" required /></div>
+        <button type="submit" class="btn btn-primary">Add Barber</button>
+      </form>
+      <ul id="barberList" class="list-group"></ul>
+    </section>
+
+    <!-- Service Management Section -->
+    <section id="serviceSection" class="section">
+      <h2>Service Management</h2>
+      <form id="serviceForm" class="mb-4">
+        <div class="mb-3"><input type="text" id="serviceName" class="form-control" placeholder="Service Name" required /></div>
+        <div class="mb-3"><input type="number" id="servicePrice" class="form-control" placeholder="Price" required /></div>
+        <div class="mb-3">
+          <textarea id="serviceDescription" class="form-control" placeholder="Description" rows="3" required></textarea>
+        </div>
+        <div class="mb-3"><input type="file" id="serviceImage" class="form-control" accept="image/*" required /></div>
+        <button type="submit" class="btn btn-primary">Add Service</button>
+      </form>
+      
+      <ul id="serviceList" class="list-group"></ul>
+    </section>
+
+    <section id="appointmentSection" class="section">
+      <h2>Appointments</h2>
+      <div id="appointmentsList" class="list-group">
+        <!-- Example appointment -->
+        <div class="list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row">
+          <div class="me-3">
+            <h5>John Doe</h5>
+            <p class="mb-1">Service: Haircut</p>
+            <p class="mb-1">Barber: Mike</p>
+            <p class="mb-1">Time: 2025-05-10 14:00</p>
+            <p class="mb-1"><strong>Status:</strong> Pending</p>
+            <p class="mb-1 text-warning"><strong>Cancellation Requested</strong></p>
+          </div>
+          <div class="mt-3 mt-md-0">
+            <button class="btn btn-success me-2" onclick="handleCancellation('approve', 1)">Approve</button>
+            <button class="btn btn-danger" onclick="handleCancellation('reject', 1)">Reject</button>
+          </div>
+        </div>
+        <!-- More appointments can be added dynamically -->
+      </div>
+    </section>
+  </div>
+
+
+
+  
+
+  <!-- Customer Modal -->
+  <div class="modal fade" id="customerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Customer Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="customerModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    window.logout = function () {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    window.location.href = '../login.html';
+  };
+  
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  
+    function handleCancellation(action, appointmentId) {
+      if (action === 'approve') {
+        alert(`Cancellation for appointment #${appointmentId} approved.`);
+        // Update status in real app
+      } else {
+        alert(`Cancellation for appointment #${appointmentId} rejected.`);
+        // Update status in real app
+      }
+    }
+  </script>
+  <script>
+    function handleCancellation(action, index) {
+      const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+      if (appointments[index]) {
+        appointments[index].cancelApproved = action === 'approve';
+        appointments[index].cancelRequest = false;
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        displayAdminAppointments();
+      }
+    }
+  
+    function displayAdminAppointments() {
+      const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+      const customers = JSON.parse(localStorage.getItem('customers')) || [];
+      const barbers = JSON.parse(localStorage.getItem('barbers')) || [];
+      const services = JSON.parse(localStorage.getItem('services')) || [];
+  
+      const list = document.getElementById('appointmentsList');
+      list.innerHTML = '';
+  
+      appointments.forEach((appointment, index) => {
+        const customer = customers.find(c => c.email === appointment.customerEmail);
+        const barber = barbers.find(b => b.email === appointment.barberEmail);
+        const serviceNames = appointment.services.map(i => services[i]?.name || "Unknown");
+  
+        const status = appointment.cancelApproved === true ? 'Cancelled' :
+                       appointment.cancelApproved === false ? 'Cancellation Rejected' :
+                       'Pending';
+  
+        const cancellationControls = appointment.cancelRequest && appointment.cancelApproved === null ? `
+          <div class="mt-3 mt-md-0">
+            <button class="btn btn-success me-2" onclick="handleCancellation('approve', ${index})">Approve</button>
+            <button class="btn btn-danger" onclick="handleCancellation('reject', ${index})">Reject</button>
+          </div>` : '';
+  
+        const cancellationText = appointment.cancelRequest && appointment.cancelApproved === null
+          ? '<p class="mb-1 text-warning"><strong>Cancellation Requested</strong></p>'
+          : appointment.cancelApproved === true
+          ? '<p class="mb-1 text-success"><strong>Cancellation Approved</strong></p>'
+          : appointment.cancelApproved === false
+          ? '<p class="mb-1 text-danger"><strong>Cancellation Rejected</strong></p>'
+          : '';
+  
+        const div = document.createElement('div');
+        div.className = 'list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row';
+        div.innerHTML = `
+          <div class="me-3">
+            <h5>${customer?.name || 'Unknown Customer'}</h5>
+            <p class="mb-1">Service: ${serviceNames.join(', ')}</p>
+            <p class="mb-1">Barber: ${barber?.name || 'Unknown Barber'}</p>
+            <p class="mb-1">Time: ${appointment.date} ${appointment.time}</p>
+            <p class="mb-1"><strong>Status:</strong> ${status}</p>
+            ${cancellationText}
+          </div>
+          ${cancellationControls}
+        `;
+        list.appendChild(div);
+      });
+    }
+  
+    // Load appointments on page load
+    document.addEventListener('DOMContentLoaded', displayAdminAppointments);
+  </script>
+  <script>
+      // ------------------ SERVICE MANAGEMENT ------------------
+
+      const serviceForm = document.getElementById('serviceForm');
+    const serviceList = document.getElementById('serviceList');
+  
+    if (serviceForm && serviceList) {
+      function loadServices() {
+        serviceList.innerHTML = '';
+        const services = JSON.parse(localStorage.getItem('services')) || [];
+        services.forEach((service, index) => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item';
+
+          li.innerHTML = `
+            <div class="d-flex align-items-center">
+              <img src="${service.image}" alt="Service Image" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px; border-radius: 8px;">
+              <div class="flex-grow-1">
+                <strong>${service.name}</strong><br/>
+                ₱${service.price}<br/>
+                <small class="text-muted">${service.description}</small>
+              </div>
+              <button class="btn btn-sm btn-danger ms-3" onclick="deleteService(${index})">Delete</button>
+            </div>
+          `;
+          serviceList.appendChild(li);
+        });
+      }
+
+  
+      serviceForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = document.getElementById('serviceName').value.trim();
+        const price = document.getElementById('servicePrice').value.trim();
+        const description = document.getElementById('serviceDescription').value.trim();
+        const imageInput = document.getElementById('serviceImage');
+        const file = imageInput.files[0];
+
+        if (!file) {
+          alert('Please upload a service image.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          const image = event.target.result;
+
+          const newService = { name, price, description, image };
+          let services = JSON.parse(localStorage.getItem('services')) || [];
+
+          if (services.some(s => s.name.toLowerCase() === name.toLowerCase())) {
+            alert('Service already exists!');
+            return;
+          }
+
+          services.push(newService);
+          localStorage.setItem('services', JSON.stringify(services));
+          alert('Service added successfully!');
+          serviceForm.reset();
+          loadServices();
+        };
+
+        reader.readAsDataURL(file);
+      });
+
+  
+      window.deleteService = function (index) {
+        let services = JSON.parse(localStorage.getItem('services')) || [];
+        const serviceName = services[index]?.name || 'this service';
+        if (confirm(`Are you sure you want to delete ${serviceName}?`)) {
+          services.splice(index, 1);
+          localStorage.setItem('services', JSON.stringify(services));
+          loadServices();
+        }
+      };
+  
+      loadServices();
+    }
+      // ------------------ ADMIN DASHBOARD MANAGEMENT ------------------
+
+  // Barber Management
+  const barberForm = document.getElementById('barberForm');
+  const barberList = document.getElementById('barberList');
+
+  if (barberForm && barberList) {
+    function loadBarbers() {
+      barberList.innerHTML = '';
+      const barbers = JSON.parse(localStorage.getItem('barbers')) || [];
+      barbers.forEach((barber, index) => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `
+          ${barber.name} (${barber.email})
+          <button class="btn btn-sm btn-danger" onclick="deleteBarber(${index})">Delete</button>
+        `;
+        barberList.appendChild(li);
+      });
+    }
+
+    barberForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('barberName').value.trim();
+      const email = document.getElementById('barberEmail').value.trim();
+      const number = document.getElementById('barberNumber').value.trim();
+      const address = document.getElementById('barberAddress').value.trim();
+      const password = document.getElementById('barberPassword').value;
+      const newBarber = { name, email, number, address, password };
+      let barbers = JSON.parse(localStorage.getItem('barbers')) || [];
+      if (barbers.some(b => b.email === email)) {
+        alert('Email already exists!');
+        return;
+      }
+      barbers.push(newBarber);
+      localStorage.setItem('barbers', JSON.stringify(barbers));
+      alert('Barber added successfully!');
+      barberForm.reset();
+      loadBarbers();
+    });
+
+    window.deleteBarber = function (index) {
+      let barbers = JSON.parse(localStorage.getItem('barbers')) || [];
+      const barberName = barbers[index]?.name || 'this barber';
+      if (confirm(`Are you sure you want to delete ${barberName}?`)) {
+        barbers.splice(index, 1);
+        localStorage.setItem('barbers', JSON.stringify(barbers));
+        loadBarbers();
+      }
+    };
+
+    loadBarbers();
+
+    
+  }
+  
+
+  // ------------------ CUSTOMER MANAGEMENT ------------------
+
+  const customerForm = document.getElementById('customerForm');
+  const customerList = document.getElementById('customerList');
+
+  if (customerForm && customerList) {
+    function loadCustomers() {
+      customerList.innerHTML = '';
+      const customers = JSON.parse(localStorage.getItem('customers')) || [];
+      customers.forEach((customer, index) => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `
+          ${customer.name} (${customer.email})
+          <button class="btn btn-sm btn-info me-2" onclick="viewCustomer(${index})">View</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteCustomer(${index})">Delete</button>
+        `;
+        customerList.appendChild(li);
+      });
+    }
+
+    // Function to view customer details
+    window.viewCustomer = function (index) {
+      const customers = JSON.parse(localStorage.getItem('customers')) || [];
+      const customer = customers[index];
+
+      // Displaying customer details in a modal or section
+      const modalBody = document.getElementById('customerModalBody');
+      modalBody.innerHTML = `
+        <h5>Profile</h5>
+        <p><strong>Name:</strong> ${customer.name}</p>
+        <p><strong>Email:</strong> ${customer.email}</p>
+        <p><strong>Phone:</strong> ${customer.phone}</p>
+        <p><strong>Address:</strong> ${customer.address}</p>
+        <hr/>
+        <h5>Services</h5>
+        ${customer.services && customer.services.length ? customer.services.map(s => `
+          <div class="border p-2 mb-2">
+            <p><strong>Service:</strong> ${s.name}</p>
+            <p><strong>Status:</strong> ${s.status}</p>
+            <p><strong>Payment:</strong> ${s.payment}</p>
+          </div>
+        `).join('') : '<p>No services available.</p>'}
+      `;
+
+      const modal = new bootstrap.Modal(document.getElementById('customerModal'));
+      modal.show();
+    };
+
+    // Customer Form Submit (Add new customer)
+    customerForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('customerName').value.trim();
+      const email = document.getElementById('customerEmail').value.trim();
+      const phone = document.getElementById('customerPhone').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      const password = document.getElementById('customerPassword').value;
+      const newCustomer = { name, email, phone, address, password, services: [] }; // Added services array
+      let customers = JSON.parse(localStorage.getItem('customers')) || [];
+      if (customers.some(c => c.email === email)) {
+        alert('Email already exists!');
+        return;
+      }
+      customers.push(newCustomer);
+      localStorage.setItem('customers', JSON.stringify(customers));
+      alert('Customer added successfully!');
+      customerForm.reset();
+      loadCustomers();
+    });
+
+    window.deleteCustomer = function (index) {
+      let customers = JSON.parse(localStorage.getItem('customers')) || [];
+      const customerName = customers[index]?.name || 'this customer';
+      if (confirm(`Are you sure you want to delete ${customerName}?`)) {
+        customers.splice(index, 1);
+        localStorage.setItem('customers', JSON.stringify(customers));
+        loadCustomers();
+      }
+    };
+
+    loadCustomers();
+  }
+  </script>
+  
+</body>
+</html>

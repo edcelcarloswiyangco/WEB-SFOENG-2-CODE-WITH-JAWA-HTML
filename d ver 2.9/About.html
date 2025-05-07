@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Book a Barber</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+      
+        .hero {
+            background: url('background barber.webp') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            position: relative;
+        }
+        
+       
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+    
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold" href="index.html">BOOK A BARBER</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="services.html">Service</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="About.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="index.html">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  
+    <div class="hero d-flex justify-content-center text-center text-light">
+        <div class="container hero-content">
+            <h1 class="display-3 fw-bold mt-5">About Us</h1>
+            <div class="row mt-4">
+                <div class="col-md-4 team-member">
+                    <img src="photo/edcel.jpg" alt="Wiyangco Edcel Carlos M.">
+                    <h5>Wiyangco Edcel Carlos M.</h5>
+                    <p>Frontend Developer</p>
+                </div>
+                <div class="col-md-4 team-member">
+                    <img src="photo/mark.jpg" alt="Mark Angel Sarmiento">
+                    <h5>Mark Angel Sarmiento</h5>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="col-md-4 team-member">
+                    <img src="photo/net.jpg" alt="Nataniel Zarate">
+                    <h5>Nataniel Zarate</h5>
+                    <p>Project Manager</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 team-member">
+                    <img src="photo/bebe.png" alt="Shane Montoya">
+                    <h5>Shane Montoya</h5>
+                    <p>QA Engineer / Tester</p>
+                </div>
+                <div class="col-md-4 team-member">
+                    <img src="photo/kyle.jpg" alt="Kyle Cunanan">
+                    <h5>Kyle Cunanan</h5>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="col-md-4 team-member">
+                    <img src="photo/jandy.png" alt="Jandy Lozano">
+                    <h5>Jandy Lozano</h5>
+                    <p>Data Engineer </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
